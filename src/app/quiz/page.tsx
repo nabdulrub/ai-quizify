@@ -1,3 +1,4 @@
+import QueryProvider from "@/components/QueryProvider";
 import QuizCreation from "@/components/QuizCreation";
 import { getAuthSession } from "@/lib/nextauth";
 import { redirect } from "next/navigation";
@@ -16,7 +17,11 @@ const QuizPage = async (props: Props) => {
     return redirect("/");
   }
 
-  return <QuizCreation />;
+  return (
+    <QueryProvider>
+      <QuizCreation />
+    </QueryProvider>
+  );
 };
 
 export default QuizPage;

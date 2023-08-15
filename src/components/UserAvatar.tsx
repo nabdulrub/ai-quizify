@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import { User } from "next-auth";
 import { Avatar } from "./ui/avatar";
@@ -18,6 +16,7 @@ const UserAvatar = ({ user }: Props) => {
             fill
             src={user.image}
             alt="profile image"
+            sizes="100vw"
             referrerPolicy="no-referrer"
           />
         </div>
