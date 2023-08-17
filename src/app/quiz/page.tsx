@@ -4,13 +4,17 @@ import { getAuthSession } from "@/lib/nextauth";
 import { redirect } from "next/navigation";
 import React from "react";
 
-type Props = {};
+type Props = {
+  searchParams: {
+    topic?: string;
+  };
+};
 
 export const metadata = {
   title: "Quiz | AI Quizify",
 };
 
-const QuizPage = async (props: Props) => {
+const QuizPage = async ({ searchParams }: Props) => {
   const session = await getAuthSession();
 
   if (!session?.user) {
@@ -19,7 +23,7 @@ const QuizPage = async (props: Props) => {
 
   return (
     <QueryProvider>
-      <QuizCreation />
+      <QuizCreation topicParam={searchParams.topic ?? ""} />
     </QueryProvider>
   );
 };

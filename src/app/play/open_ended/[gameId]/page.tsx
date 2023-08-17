@@ -1,3 +1,6 @@
+import MCQ from "@/components/MCQ";
+import OpenEnded from "@/components/OpenEnded";
+import QueryProvider from "@/components/QueryProvider";
 import { prisma } from "@/lib/db";
 import { getAuthSession } from "@/lib/nextauth";
 import { redirect } from "next/navigation";
@@ -13,7 +16,7 @@ const OpenEndedPage = async ({ params: { gameId } }: Props) => {
   const session = await getAuthSession();
 
   if (!session?.user) {
-    redirect("/");
+    return redirect("/");
   }
 
   const game = await prisma.game.findUnique({
@@ -21,11 +24,26 @@ const OpenEndedPage = async ({ params: { gameId } }: Props) => {
       id: gameId,
     },
     include: {
-      questions: true,
+      questions: {
+        select: {
+          id: true,
+          question: true,
+          answer: true,
+        },
+      },
     },
   });
 
-  return <div>{JSON.stringify(game, null, 2)}</div>;
+  console.log(game?.questions);
+
+  if (!game || game.gameType !== "open_ended") {
+    return redirect("/quiz");
+  }
+  return (
+    <QueryProvider>
+      <OpenEnded game={game} />
+    </QueryProvider>
+  );
 };
 
 export default OpenEndedPage;

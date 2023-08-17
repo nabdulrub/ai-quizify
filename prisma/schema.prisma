@@ -51,6 +51,14 @@ enum GameType {
   open_ended
 }
 
+model TopicCount {
+  id    String @id @default(cuid())
+  topic String @unique
+  count Int
+
+  @@index([topic], name: "topic")
+}
+
 model Game {
   id          String     @id @default(cuid())
   userId      String

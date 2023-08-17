@@ -28,17 +28,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import LoadingQuestions from "./LoadingQuestions";
 
 type Props = {
-  topic: string;
+  topicParam: string;
 };
 
 type Input = z.infer<typeof quizCreationSchema>;
 
-const QuizCreation = ({ topic: topicParam }: Props) => {
+const QuizCreation = ({ topicParam }: Props) => {
   const router = useRouter();
   const [showLoader, setShowLoader] = React.useState(false);
-  const [finishedLoading, setFinishedLoading] = React.useState(false);
+  const [finished, setFinished] = React.useState(false);
   const { toast } = useToast();
   const { mutate: getQuestions, isLoading } = useMutation({
     mutationFn: async ({ amount, topic, type }: Input) => {
@@ -72,17 +73,22 @@ const QuizCreation = ({ topic: topicParam }: Props) => {
         }
       },
       onSuccess: ({ gameId }: { gameId: string }) => {
-        setFinishedLoading(true);
-
-        if (form.getValues("type") === "mcq") {
-          router.push(`/play/mcq/${gameId}`);
-        } else if (form.getValues("type") === "open_ended") {
-          router.push(`/play/open-ended/${gameId}`);
-        }
+        setFinished(true);
+        setTimeout(() => {
+          if (form.getValues("type") === "mcq") {
+            router.push(`/play/mcq/${gameId}`);
+          } else if (form.getValues("type") === "open_ended") {
+            router.push(`/play/open_ended/${gameId}`);
+          }
+        }, 1000);
       },
     });
   };
   form.watch();
+
+  if (showLoader) {
+    return <LoadingQuestions finished={finished} />;
+  }
 
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
