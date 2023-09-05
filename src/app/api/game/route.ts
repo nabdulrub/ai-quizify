@@ -16,6 +16,7 @@ export async function POST(req: Request, res: Response) {
           status: 401,
         }
       );
+      4;
     }
 
     console.log("Before creating game record");
@@ -63,7 +64,6 @@ export async function POST(req: Request, res: Response) {
       };
 
       const manyData = data.questions.map((question: mcqQuestion) => {
-        // mix up the options lol
         const options = [
           question.option1,
           question.option2,

@@ -30,7 +30,7 @@ export default async function Home() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <SignInButton text="Sign In with Google!" />
+          <SignInButton text="Sign In with Github!" />
         </CardContent>
       </Card>
     </div>
